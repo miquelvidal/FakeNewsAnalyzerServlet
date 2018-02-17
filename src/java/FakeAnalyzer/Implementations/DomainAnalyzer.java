@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 /**
@@ -21,7 +23,11 @@ public class DomainAnalyzer implements Analyzer{
     Hashtable<String,Boolean> whitelist;
     Hashtable<String,Boolean> blacklist;
     public DomainAnalyzer() throws FileNotFoundException, IOException{
-        BufferedReader okFile = new BufferedReader(new FileReader("dominios_ok"));
+        whitelist = new Hashtable<String,Boolean>();
+        blacklist = new Hashtable<String,Boolean>();
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        InputStream input = classLoader.getResourceAsStream("FakeAnalyzer/Implementations/dominios_ok");
+        BufferedReader okFile = new BufferedReader(new InputStreamReader(input));
         String line = okFile.readLine();
 
         while (line != null) {
@@ -29,7 +35,8 @@ public class DomainAnalyzer implements Analyzer{
             line = okFile.readLine();
         }
         
-        BufferedReader koFile = new BufferedReader(new FileReader("dominios_ko"));
+        InputStream input2 = classLoader.getResourceAsStream("FakeAnalyzer/Implementations/dominios_ko");
+        BufferedReader koFile = new BufferedReader(new InputStreamReader(input2));
         line = koFile.readLine();
 
         while (line != null) {

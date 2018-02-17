@@ -25,17 +25,17 @@ public class FakeUrl extends HttpServlet {
 
     
     private static List<Analyzer> analitzadors= null;
-    
-  public void init(ServletConfig config) throws ServletException {
-    super.init(config);
-    String initial = config.getInitParameter("initial");
-    
-    analitzadors = new ArrayList<Analyzer>();
-    
-    analitzadors.add( new DomainAnalyzer());
-    
-  }
+    /*    
+      public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        String initial = config.getInitParameter("initial");
 
+        analitzadors = new ArrayList<Analyzer>();
+
+        analitzadors.add( new DomainAnalyzer());
+
+      }
+    */
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,6 +48,10 @@ public class FakeUrl extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (analitzadors==null){
+            analitzadors = new ArrayList<Analyzer>();
+        analitzadors.add( new DomainAnalyzer());
+        }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
