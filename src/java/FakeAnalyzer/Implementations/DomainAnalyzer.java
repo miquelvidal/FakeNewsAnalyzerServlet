@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Hashtable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -48,7 +50,29 @@ public class DomainAnalyzer implements Analyzer{
     
     @Override
     public double calcular(String cadenaUrl) {
-        double result = whitelist.size()+blacklist.size();
+        //String domain = cadenaUrl.replaceAll(".*\\.(?=.*\\.)", "");
+        
+        Pattern pattern = Pattern.compile("(https?://)([^:^/]*)(:\\d*)?(.*)?");
+        Matcher matcher = pattern.matcher(cadenaUrl);
+        matcher.find();
+
+        String protocol = matcher.group(1);
+        String domain = matcher.group(2);
+        String[] results = domain.split("\\.");
+        if (results.length>2){
+            domain = results[results.length-2]+"."+results[results.length-1];
+        }
+            
+           
+        
+        double result = 0.;
+        if (whitelist.get(domain)!=null){
+             result = 100.;
+        }
+        else if (blacklist.get(domain)!=null){
+             result = 0.;
+        }
+        else result = 50.;
         return result;
     }
     

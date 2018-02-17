@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +53,7 @@ public class FakeUrl extends HttpServlet {
             throws ServletException, IOException {
         if (analitzadors==null){
             analitzadors = new ArrayList<Analyzer>();
-        analitzadors.add( new DomainAnalyzer());
+            analitzadors.add( new DomainAnalyzer());
         }
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -58,6 +61,7 @@ public class FakeUrl extends HttpServlet {
             //request.getRequestURL();
             //out.println("75");
             String urlString = request.getParameter("payload");
+            
             double contar = 0.0;
             double total = 0.0;
             for(int i = 0;i<analitzadors.size();i++){
@@ -66,6 +70,9 @@ public class FakeUrl extends HttpServlet {
             }
             
             out.println(""+( total));
+            //String domain = urlString.substring(urlString.lastIndexOf('.', urlString.lastIndexOf('.')-1) + 1);
+
+            
         }
     }
 
